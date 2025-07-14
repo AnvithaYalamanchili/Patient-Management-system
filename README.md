@@ -44,3 +44,17 @@ pip install -r requirements.txt
 ## Usage 
 Run the app with uvicorn main:app --reload
 
+## Folder Structure 
+.
+├── main.py
+├── models.py
+├── schemas.py
+├── utils.py
+├── database.py
+├── router/
+│   ├── auth.py
+│   ├── patient.py
+│   └── user_patient.py
+└── README.md
+
+
