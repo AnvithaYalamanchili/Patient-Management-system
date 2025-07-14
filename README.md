@@ -10,6 +10,7 @@ This is a FastAPI-based backend project for managing patient records, including 
 ## Installation
 1. Clone the repo:
 git clone https://github.com/AnvithaYalamanchili/Patient-Management-system.git
+
 cd Patient-Management-system
 
 ## Create and activate virtual environment
