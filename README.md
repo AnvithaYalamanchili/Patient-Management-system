@@ -1,12 +1,12 @@
-# 🏥 Patient Management System (Ongoing Project)
+#  Patient Management System (Ongoing Project)
 
 This project is a web-based backend system built using **FastAPI** and **SQLAlchemy**, aimed at managing hospital patient records securely and efficiently.
 
-> 🚧 This is a work in progress. Core functionality is being actively developed.
+>  This is a work in progress. Core functionality is being actively developed.
 
 ---
 
-## ✨ Features (In Progress)
+##  Features (In Progress)
 
 - [x] User registration with hashed password storage
 - [x] User login with authentication
