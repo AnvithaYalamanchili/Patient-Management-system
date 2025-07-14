@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,EmailStr
 from datetime import date
 
 class Patient(BaseModel):
@@ -10,3 +10,20 @@ class Patient(BaseModel):
     diagnosis:str
     admission_date:date
     discharge_date:date | None=None
+
+class PatientResponse(Patient):
+    class Config:
+        orm_mode=True
+        pass
+
+class PatientUser(BaseModel):
+    name:str
+    email:EmailStr
+    password:str
+
+class PatientUserResponse(BaseModel):
+    name:str
+    email:EmailStr
+    class Config:
+        orm_mode=True
+        pass
