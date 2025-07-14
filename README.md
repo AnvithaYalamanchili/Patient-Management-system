@@ -15,7 +15,9 @@ git clone https://github.com/AnvithaYalamanchili/Patient-Management-system.git
 
 ## Create and activate virtual environment
 python -m venv venv
+
 source venv/bin/activate  # Linux/macOS
+
 venv\Scripts\activate     # Windows
 
 ## Install dependencies
