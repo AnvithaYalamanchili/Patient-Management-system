@@ -1,11 +1,31 @@
-# Patient-Management-system
-This is a FastAPI-based backend project for managing patient records, including user authentication and CRUD operations on patient data.
+# 🏥 Patient Management System (Ongoing Project)
 
-## Features
-- Add, update, delete patient records
-- User registration and login with password hashing
-- Input validation using Pydantic schemas
-- PostgreSQL database with SQLAlchemy ORM
+This project is a web-based backend system built using **FastAPI** and **SQLAlchemy**, aimed at managing hospital patient records securely and efficiently.
+
+> 🚧 This is a work in progress. Core functionality is being actively developed.
+
+---
+
+## ✨ Features (In Progress)
+
+- [x] User registration with hashed password storage
+- [x] User login with authentication
+- [x] Add new patient records
+- [x] Fetch patient and user data
+- [ ] JWT token-based authentication
+- [ ] Update and delete patient records
+- [ ] Role-based access control for doctors/admin
+- [ ] Frontend UI (Future scope)
+
+---
+
+## 🛠️ Tech Stack
+
+- **FastAPI** – web framework
+- **SQLAlchemy** – ORM for database interactions
+- **Pydantic** – request/response validation
+- **SQLite/PostgreSQL** – database
+- **bcrypt** – for password hashing
 
 ## Installation
 1. Clone the repo:
