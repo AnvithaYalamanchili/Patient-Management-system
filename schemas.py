@@ -24,6 +24,7 @@ class PatientUser(BaseModel):
 class PatientUserResponse(BaseModel):
     name:str
     email:EmailStr
+    password:str
     class Config:
         orm_mode=True
         pass
