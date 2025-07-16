@@ -1,5 +1,6 @@
 from pydantic import BaseModel,EmailStr
 from datetime import date
+from typing import Optional
 
 class Patient(BaseModel):
     name:str
@@ -16,15 +17,19 @@ class PatientResponse(Patient):
         orm_mode=True
         pass
 
-class PatientUser(BaseModel):
+class User(BaseModel):
     name:str
     email:EmailStr
     password:str
+    role:str
 
-class PatientUserResponse(BaseModel):
+class UserResponse(BaseModel):
     name:str
     email:EmailStr
-    password:str
+    role:str
     class Config:
         orm_mode=True
         pass
+
+class TokenData(BaseModel):
+    id:Optional[int]=None

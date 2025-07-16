@@ -6,7 +6,7 @@ import schemas
 from sqlalchemy.orm import Session
 from database import get_db,engine
 import models
-from router import patient, user_patient,auth
+from router import patient, user,auth
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -24,7 +24,7 @@ while True:
         time.sleep(2)
 
 app.include_router(patient.router)
-app.include_router(user_patient.router)
+app.include_router(user.router)
 app.include_router(auth.router)
 
 @app.get('/')

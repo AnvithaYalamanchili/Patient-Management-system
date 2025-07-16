@@ -14,10 +14,11 @@ class Patient(Base):
     admission_date = Column(Date, nullable=False)
     discharge_date = Column(Date, nullable=True)
 
-class PatientUser(Base):
-    __tablename__='patientUser'
+class User(Base):
+    __tablename__='user'
 
     id=Column(Integer,primary_key=True,nullable=False)
     name=Column(String,nullable=False)
     email=Column(String,nullable=False,unique=True)
     password=Column(String,nullable=False)
+    role=Column(String,nullable=False)

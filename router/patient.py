@@ -6,11 +6,12 @@ import schemas
 from sqlalchemy.orm import Session
 from database import get_db,engine
 import models
+import oauth2
 
 router=APIRouter(tags=['Patients'])
 
-@router.get('/patients')
-def get_patients(db:Session=Depends(get_db)):
+@router.get('/patients',)
+def get_patients(db:Session=Depends(get_db),current_user:int=Depends(oauth2.get_current_user)):
     # cursor.execute("""SELECT * FROM patient""")
     # patients=cursor.fetchall()
     patients=db.query(models.Patient).all()
@@ -18,7 +19,7 @@ def get_patients(db:Session=Depends(get_db)):
     return {'patient data': patients}
 
 @router.get('/patient/{id}')
-def get_patient(id:int,response:Response,db:Session=Depends(get_db)):
+def get_patient(id:int,response:Response,db:Session=Depends(get_db),):
     # cursor.execute("""SELECT * FROM patient WHERE id=%s""",(str(id)))
     # patient=cursor.fetchone()
     patient=db.query(models.Patient).filter(models.Patient.id==id).first()
@@ -27,7 +28,7 @@ def get_patient(id:int,response:Response,db:Session=Depends(get_db)):
     return {f'patient data with id:{id}':patient}
 
 @router.post('/patient',status_code=status.HTTP_201_CREATED,response_model=schemas.PatientResponse)
-def create_patient(patient:schemas.Patient,db:Session=Depends(get_db)):
+def create_patient(patient:schemas.Patient,db:Session=Depends(get_db),current_user:int=Depends(oauth2.get_current_user)):
     try:
         # cursor.execute("""INSERT INTO patient (name,age,gender,email,phone_number,diagnosis,admission_date,discharge_date) VALUES(%s,%s,%s,%s,%s,%s,%s,%s) RETURNING * """,(patient.name,patient.age,patient.gender,patient.email,patient.phone_number,patient.diagnosis,patient.admission_date,patient.discharge_date))
         # new_patient=cursor.fetchone()
@@ -42,7 +43,7 @@ def create_patient(patient:schemas.Patient,db:Session=Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,detail="Failed to insert patient")
     
 @router.put('/patient/{id}')
-def update_patient(id:int,patient:schemas.Patient,db:Session=Depends(get_db)):
+def update_patient(id:int,patient:schemas.Patient,db:Session=Depends(get_db),current_user:int=Depends(oauth2.get_current_user)):
     try:
         # cursor.execute("""UPDATE patient SET name=%s , age=%s, gender=%s, email=%s, phone_number=%s, diagnosis=%s,admission_date=%s,discharge_date=%s WHERE id= %s RETURNING * """,
         #                (patient.name,patient.age,patient.gender,patient.email,patient.phone_number,patient.diagnosis,patient.admission_date,patient.discharge_date,str(id)))
@@ -59,7 +60,7 @@ def update_patient(id:int,patient:schemas.Patient,db:Session=Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,detail="Failed to update patient data")
 
 @router.delete('/patient/{id}',status_code=status.HTTP_204_NO_CONTENT)
-def delete_patient(id:int,db:Session=Depends(get_db)):
+def delete_patient(id:int,db:Session=Depends(get_db),current_user:int=Depends(oauth2.get_current_user)):
     try:
         # cursor.execute("DELETE FROM patient WHERE id=%s RETURNING *",str(id))
         # deleted_patient=cursor.fetchone()
