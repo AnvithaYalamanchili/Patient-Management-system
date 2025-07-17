@@ -27,21 +27,34 @@ def get_patient(id:int,response:Response,db:Session=Depends(get_db),):
         raise HTTPException(status.HTTP_404_NOT_FOUND,detail=f'The patient with id {id} not found')
     return {f'patient data with id:{id}':patient}
 
-@router.post('/patient',status_code=status.HTTP_201_CREATED,response_model=schemas.PatientResponse)
-def create_patient(patient:schemas.Patient,db:Session=Depends(get_db),current_user:int=Depends(oauth2.get_current_user)):
+@router.post('/patient', status_code=status.HTTP_201_CREATED, response_model=schemas.PatientResponse)
+def create_patient(patient: schemas.Patient, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     try:
-        # cursor.execute("""INSERT INTO patient (name,age,gender,email,phone_number,diagnosis,admission_date,discharge_date) VALUES(%s,%s,%s,%s,%s,%s,%s,%s) RETURNING * """,(patient.name,patient.age,patient.gender,patient.email,patient.phone_number,patient.diagnosis,patient.admission_date,patient.discharge_date))
-        # new_patient=cursor.fetchone()
-        # conn.commit()
-        new_patient=models.Patient(**patient.dict())
+        print("Current user role:", current_user.role)  
+
+        if current_user.role.strip().lower() != "doctor":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Not authorized to create patient only doctor can create patient"
+            )
+
+        new_patient = models.Patient(**patient.dict(), managed_by_id=current_user.id)
         db.add(new_patient)
         db.commit()
         db.refresh(new_patient)
         return new_patient
+
+    except HTTPException:
+        raise
+
     except Exception as e:
-        conn.rollback()
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,detail="Failed to insert patient")
-    
+        db.rollback()
+        print("Error:", str(e))  # Optional debug
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to insert patient"
+        )
+
 @router.put('/patient/{id}')
 def update_patient(id:int,patient:schemas.Patient,db:Session=Depends(get_db),current_user:int=Depends(oauth2.get_current_user)):
     try:
@@ -56,7 +69,7 @@ def update_patient(id:int,patient:schemas.Patient,db:Session=Depends(get_db),cur
         db.commit()
         return {"Patient updated successfully":updated_patient}
     except Exception as e:
-        conn.rollback()
+        db.rollback()
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,detail="Failed to update patient data")
 
 @router.delete('/patient/{id}',status_code=status.HTTP_204_NO_CONTENT)
@@ -72,7 +85,7 @@ def delete_patient(id:int,db:Session=Depends(get_db),current_user:int=Depends(oa
         db.commit()
         return {f'Patient with id {id} deleted successfully':deleted_patient}
     except Exception as e:
-        conn.rollback()
+        db.rollback()
         print(e)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,detail="Failed to delete patient.")
 

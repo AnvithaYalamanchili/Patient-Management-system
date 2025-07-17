@@ -1,5 +1,5 @@
 from database import Base
-from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy import Column, Integer, String, Date,ForeignKey
 
 class Patient(Base):
     __tablename__ = 'patient'
@@ -8,11 +8,12 @@ class Patient(Base):
     name = Column(String(100), nullable=False)
     age = Column(Integer, nullable=False)
     gender = Column(String(1), nullable=False)
-    email = Column(String(255), nullable=False)
-    phone_number = Column(String(15), nullable=False)
+    email = Column(String(255), nullable=False,unique=True)
+    phone_number = Column(String(15), nullable=False,unique=True)
     diagnosis = Column(String(255), nullable=False)
     admission_date = Column(Date, nullable=False)
     discharge_date = Column(Date, nullable=True)
+    managed_by_id=Column(Integer,ForeignKey("user.id",ondelete='SET NULL'),nullable=True)
 
 class User(Base):
     __tablename__='user'
