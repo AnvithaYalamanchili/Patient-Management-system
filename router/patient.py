@@ -88,4 +88,3 @@ def delete_patient(id:int,db:Session=Depends(get_db),current_user:int=Depends(oa
         db.rollback()
         print(e)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,detail="Failed to delete patient.")
-
